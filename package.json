@@ -4,6 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "debug-trace": "npx playwright test tests/demo/debug.make.aptmnt.spec.ts --trace on",
+    "debug-cli": "npx playwright test tests/demo/debug.make.aptmnt.spec.ts --debug",
+    "debug-ui": "npx playwright test tests/demo/debug.make.aptmnt.spec.ts --headed --ui",
+    "debug": "npx playwright test tests/demo/debug.make.aptmnt.spec.ts --headed",
+    "inventory": "npx playwright test tests/functional/inventory.spec.ts --headed",
+    "ele-int": "npx playwright test tests/demo/ele.handling.make.aptmnt.spec.ts --headed",
+    "make-aptmt": "npx playwright test tests/functional/make aptmnt.spec.ts --headed",
     "login": "npx playwright test tests/functional/login.spec.ts --headed",
     "demo": "npx playwright test tests/demo/mytest.spec.ts --headed"
   },
@@ -13,6 +20,7 @@
   "type": "commonjs",
   "devDependencies": {
     "@playwright/test": "^1.60.0",
-    "@types/node": "^25.9.1"
+    "@types/node": "^25.9.1",
+    "allure-playwright": "^3.9.0"
   }
 }
