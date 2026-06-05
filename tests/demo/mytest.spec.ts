@@ -1,4 +1,5 @@
-import { test, expect } from "@playwright/test";
+import { test, expect,devices } from "@playwright/test";
+import constants from '../../data/constants.json'
 
 test("Test homepage title", async ({ page }) => {
   // 1. Go to Home Page
@@ -10,12 +11,12 @@ test("Test homepage title", async ({ page }) => {
   // 3. Assert header text
   await expect(page.locator("//h1")).toHaveText("CURA Healthcare Service");
 });
-test.only("Demo Locators", async ({ page }) => {
+test("Demo Locators", async ({ page }) => {
   //✅ `page.getBy*()` and `page.locator()` methods returns the `locator` object
   // The above methods not to be `awaited`
   // The type of locator is an `object`
   // Locators are LAZY until an action is fired on them
-  
+
   //1. Launch URL
   await page.goto("https://katalon-demo-cura.herokuapp.com/");
 
@@ -25,3 +26,24 @@ test.only("Demo Locators", async ({ page }) => {
   // await makeAppmtButton.click();
   // await expect(page.getByText("Please login to make")).toBeVisible();
 });
+test("Demo Config file", async ({ page }, testInfo) => {
+  console.log(`Run Time Config: ${JSON.stringify(testInfo.config)}`);
+})
+test("Demo fixtures", async ({ page,browserName }, testInfo) => {
+  console.log(`The test runs on: ${browserName}`);
+})
+test("Demo devices", async ({ page,browserName }, testInfo) => {
+  console.log(`Supported Devices: ${Object.keys(devices)}`);
+})
+test("Demo Paralell Runs 1", {tag: "@demo"},async ({ page,browserName }, testInfo) => {
+ await page.goto("https://www.google.com")
+})
+test("Demo Paralell Runs 2", {tag: "@demo"},async ({ page,browserName }, testInfo) => {
+ await page.goto("https://www.google.com")
+})
+test("Demo Paralell Runs 3", {tag: "@demo"},async ({ page,browserName }, testInfo) => {
+ await page.goto("https://www.google.com")
+})
+test.only("Demo Constant Data" ,async ({ page,browserName }, testInfo) => {
+ console.log(`Constants:${JSON.stringify(constants.STATUSCODES)}`);
+})

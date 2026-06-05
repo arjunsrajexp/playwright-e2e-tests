@@ -1,0 +1,6 @@
+{
+    "STATUSCODES":{
+        "Success": 200,
+        "notFound":401
+    }
+}

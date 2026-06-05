@@ -1,6 +1,11 @@
 import { test, expect } from '@playwright/test';
+import TestData from '../../data/test-data';
 
-test.describe("Make Appointment", () => {
+const makeApptTestData = TestData.makeAppointmentTestData() //-> Return 3 objects
+
+//Access the Data
+for (const apptData of makeApptTestData){
+    test.describe("Make Appointment", () => {
     test.beforeEach("Login with Valid Credentials", async ({ page }) => {
         //1. Launch URL and assert title and header
         await page.goto("https://katalon-demo-cura.herokuapp.com/");
@@ -16,23 +21,30 @@ test.describe("Make Appointment", () => {
         await page.getByLabel("Password").fill("ThisIsNotAPassword");
         await page.getByRole("button", { name: "Login" }).click();
 
+        //Get Login Cookies
+        const logincookies = await page.context().cookies()
+        process.env.LOGIN_COOKIES=JSON.stringify(logincookies)
+
         //Assert a Text
         await expect(page.locator("h2")).toContainText("Make Appointment");
 
     })
-    test('Make Appointment with non default values', async ({ page }) => {
+    test(`${apptData.testID}: Make Appointment with non default values`, async ({ page },testInfo) => {
+        //Access the login cookies
+        console.log(`Login Cookies: ${process.env.LOGIN_COOKIES}`);
+        
         //Dropdown
-        await page.getByLabel('Facility').selectOption('Hongkong CURA Healthcare Center');
+        await page.getByLabel('Facility').selectOption(apptData.facility);
 
         //Checkbox
         await page.getByRole('checkbox', { name: 'Apply for hospital readmission' }).check();
 
         //Radio Button
-        await page.getByRole('radio', { name: 'Medicaid' }).check();
+        await page.getByRole('radio', { name: apptData.hcp }).check();
 
         //Date input box
         await page.getByRole('textbox', { name: 'Visit Date (Required)' }).click();
-        await page.getByRole('textbox', { name: 'Visit Date (Required)' }).pressSequentially('05/05/2027');
+        await page.getByRole('textbox', { name: 'Visit Date (Required)' }).pressSequentially(apptData.visitDate);
 
         //Multi Line Comments Input Box
         await page.getByRole('textbox', { name: 'Comment' }).click();
@@ -46,4 +58,7 @@ test.describe("Make Appointment", () => {
         await expect(page.getByRole('link', { name: 'Go to Homepage' })).toBeVisible();
     });
 })
+
+}
+
 
