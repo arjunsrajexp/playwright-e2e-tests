@@ -12,7 +12,7 @@ dotenv.config({ path: path.resolve(__dirname, ".env") });
  * See https://playwright.dev/docs/test-configuration.
  */
 
-export const baseConfig =  defineConfig({
+export default defineConfig({
   testDir: "./tests",
   //globalTimeout:10_000,
   /* Run tests in files in parallel */
@@ -57,6 +57,8 @@ export const baseConfig =  defineConfig({
     ignoreHTTPSErrors: true,
     screenshot: "on",
     video: "retain-on-failure",
+    userAgent:
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
   },
 
   /* Configure projects for major browsers */
@@ -64,10 +66,14 @@ export const baseConfig =  defineConfig({
     // {
     //   name: "chromium",
     //   use: {
-    //     //...devices["Desktop Chrome"],
-    //     viewport: null,
+    //     ...devices["Desktop Chrome"],
+    //     channel: 'chrome',
     //     launchOptions: {
-    //       args: ["--start-maximized"],
+    //       args: [
+    //         "--disable-blink-features=AutomationControlled",
+    //         "--disable-features=IsolateOrigins,site-per-process",
+    //         "--allow-no-sandbox-job",
+    //       ],
     //     },
     //   },
     // },
@@ -93,20 +99,29 @@ export const baseConfig =  defineConfig({
     // },
 
     /* Test against branded browsers. */
-    {
-      name: 'Microsoft Edge',
-      use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    },
     // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+    //   name: "Microsoft Edge",
+    //   use: { ...devices["Desktop Edge"], channel: "msedge" },
     // },
-  //   {
-  //   name:"Galaxy A55",
-  //   use: {...devices['Galaxy A55']},
-  // }
+    {
+      name: "Google Chrome",
+      use: {
+        ...devices["Desktop Chrome"],
+        channel: "chrome",
+        launchOptions: {
+          args: [
+            "--disable-blink-features=AutomationControlled",
+            "--disable-features=IsolateOrigins,site-per-process",
+            "--allow-no-sandbox-job",
+          ],
+        },
+      },
+    },
+    //   {
+    //   name:"Galaxy A55",
+    //   use: {...devices['Galaxy A55']},
+    // }
   ],
-  
 
   /* Run your local dev server before starting the tests */
   // webServer: {

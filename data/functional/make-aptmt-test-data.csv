@@ -1,0 +1,4 @@
+testID,facility,hcp,visitDate
+TC001,"Tokyo CURA Healthcare Center",Medicare,05/10/2026
+TC002,"Hongkong CURA Healthcare Center",Medicaid,05/11/2026
+TC003,"Seoul CURA Healthcare Center",None,05/11/2026

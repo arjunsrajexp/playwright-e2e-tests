@@ -1,9 +1,16 @@
 import { test, expect } from '@playwright/test';
+import { log } from '../helpers/logger';
 
 test.describe("Make Appointment", () => {
-    test.beforeEach("Login with Valid Credentials", async ({ page }) => {
+    test.beforeEach("Login with Valid Credentials", async ({ page },testInfo) => {
         //1. Launch URL and assert title and header
-        await page.goto("https://katalon-demo-cura.herokuapp.com/");
+        //Get the URL from config file
+        const envConfig = testInfo.project.use as any;
+
+        //Custom Logs
+        await log("info", `Launching URL: ${envConfig.URL}`);
+
+        await page.goto(envConfig.URL);
         await expect(page).toHaveTitle("CURA Healthcare Service");
         await expect(page.locator("//h1")).toHaveText("CURA Healthcare Service");
 
@@ -12,12 +19,15 @@ test.describe("Make Appointment", () => {
         await expect(page.getByText("Please login to make")).toBeVisible();
 
         //Successful Login
-        await page.getByLabel("Username").fill("John Doe");
-        await page.getByLabel("Password").fill("ThisIsNotAPassword");
+        await page.getByLabel("Username").fill(process.env.TEST_USER_NAME);
+        await page.getByLabel("Password").fill(process.env.TEST_PASSWORD);
         await page.getByRole("button", { name: "Login" }).click();
 
         //Assert a Text
         await expect(page.locator("h2")).toContainText("Make Appointment");
+        await log("info", "Login Successful...");
+        await log("warn", "WARNING TEST...");
+        await log("error", "ERROR TEST...");
 
     })
     test('Make Appointment with non default values', async ({ page },testInfo) => {
